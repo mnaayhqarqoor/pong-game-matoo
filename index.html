@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تتبع الوجه - Face Tracking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f0f0f0;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+        }
+        
+        #videoContainer {
+            position: relative;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        
+        #video {
+            width: 100%;
+            max-width: 600px;
+            border: 2px solid #ccc;
+        }
+        
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .loading {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        
+        .success {
+            background-color: #e8f5e8;
+            color: #2e7d32;
+        }
+        
+        .controls {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>تتبع الوجه عبر الكاميرا</h1>
+        <p>هذا الموقع يتيح لك تتبع الوجه باستخدام كاميرا الجهاز الخاصة بك.</p>
+        
+        <div class="status loading" id="status">جارٍ تحميل النماذج...</div>
+        
+        <div class="controls">
+            <button id="startBtn" onclick="startVideo()">بدء الكشف عن الوجه</button>
+            <button id="stopBtn" onclick="stopVideo()" disabled>إيقاف الكاميرا</button>
+        </div>
+        
+        <div id="videoContainer">
+            <video id="video" autoplay playsinline></video>
+            <canvas id="canvas"></canvas>
+        </div>
+        
+        <div class="info">
+            <p><strong>ملاحظة:</strong> تحتاج إلى السماح بالوصول إلى الكاميرا عند طلبها.</p>
+            <p>النماذج المطلوبة سيتم تحميلها تلقائيًا من الإنترنت.</p>
+        </div>
+    </div>
+
+    <!-- تضمين مكتبة face-api.js -->
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    
+    <script>
+        // المتغيرات
+        let video = document.getElementById('video');
+        let canvas = document.getElementById('canvas');
+        let ctx = canvas.getContext('2d');
+        let isVideoPlaying = false;
+        let animationId;
+        
+        // دالة بدء تشغيل الفيديو
+        async function startVideo() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        width: { ideal: 640 }, 
+                        height: { ideal: 480 } 
+                    }, 
+                    audio: false 
+                });
+                
+                video.srcObject = stream;
+                isVideoPlaying = true;
+                
+                // تحديث أزرار التحكم
+                document.getElementById('startBtn').disabled = true;
+                document.getElementById('stopBtn').disabled = false;
+                
+                // انتظار تحميل الفيديو
+                video.onloadedmetadata = () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    detectFaces();
+                };
+                
+                document.getElementById('status').textContent = 'الكاميرا جاهزة، يتم تتبع الوجوه الآن...';
+                document.getElementById('status').className = 'status success';
+            } catch (err) {
+                console.error("خطأ في الوصول إلى الكاميرا:", err);
+                document.getElementById('status').textContent = 'خطأ في الوصول إلى الكاميرا: ' + err.message;
+                document.getElementById('status').className = 'status error';
+            }
+        }
+        
+        // دالة إيقاف الفيديو
+        function stopVideo() {
+            if (video.srcObject) {
+                const tracks = video.srcObject.getTracks();
+                tracks.forEach(track => track.stop());
+                video.srcObject = null;
+            }
+            
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            
+            isVideoPlaying = false;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // تحديث أزرار التحكم
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+            
+            document.getElementById('status').textContent = 'الكاميرا متوقفة.';
+            document.getElementById('status').className = 'status';
+        }
+        
+        // دالة كشف الوجوه
+        async function detectFaces() {
+            if (!isVideoPlaying) return;
+            
+            // تحقق مما إذا كانت النماذج محملة
+            if (!faceapi.nets.tinyFaceDetector.isLoaded || 
+                !faceapi.nets.faceLandmark68Net.isLoaded ||
+                !faceapi.nets.faceRecognitionNet.isLoaded) {
+                document.getElementById('status').textContent = 'لا تزال النماذج قيد التحميل...';
+                document.getElementById('status').className = 'status loading';
+                setTimeout(detectFaces, 100);
+                return;
+            }
+            
+            document.getElementById('status').textContent = 'يتم تتبع الوجوه...';
+            document.getElementById('status').className = 'status success';
+            
+            // كشف الوجوه
+            const detections = await faceapi.detectAllFaces(
+                video, 
+                new faceapi.TinyFaceDetectorOptions()
+            ).withFaceLandmarks().withFaceDescriptors();
+            
+            // مسح المحتوى السابق
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // رسم المستطيلات حول الوجوه
+            faceapi.draw.drawDetections(canvas, detections);
+            faceapi.draw.drawFaceLandmarks(canvas, detections);
+            
+            // الاستمرار في التتبع
+            animationId = requestAnimationFrame(detectFaces);
+        }
+        
+        // دالة تحميل النماذج
+        async function loadModels() {
+            try {
+                document.getElementById('status').textContent = 'جارٍ تحميل نموذج Tiny Face Detector...';
+                
+                await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+                document.getElementById('status').textContent = 'نموذج كشف الوجه محمل...';
+                
+                await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+                document.getElementById('status').textContent = 'نموذج ملامح الوجه محمل...';
+                
+                await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
+                document.getElementById('status').textContent = 'نموذج التعرف على الوجه محمل...';
+                
+                document.getElementById('status').textContent = 'جميع النماذج تم تحميلها بنجاح! يمكنك الآن بدء تتبع الوجه.';
+            } catch (err) {
+                console.error("خطأ في تحميل النماذج:", err);
+                document.getElementById('status').textContent = 'خطأ في تحميل النماذج: ' + err.message;
+                document.getElementById('status').className = 'status error';
+            }
+        }
+        
+        // تحميل النماذج عند تحميل الصفحة
+        window.addEventListener('load', loadModels);
+    </script>
+</body>
+</html>
