@@ -1,385 +1,542 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pong Game</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎮 لعبة Pong - ضد الكمبيوتر</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            font-family: 'Arial', sans-serif;
-            color: white;
-        }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      overflow: hidden;
+      padding: 20px;
+    }
 
-        .container {
-            text-align: center;
-        }
+    h1 {
+      margin-bottom: 15px;
+      font-size: 2.2rem;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+      text-align: center;
+    }
 
-        h1 {
-            margin-bottom: 20px;
-            font-size: 2.5em;
-            text-shadow: 0 0 10px rgba(0, 255, 200, 0.5);
-        }
+    .score-board {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
 
-        canvas {
-            border: 3px solid #00ffc8;
-            background-color: #0f3460;
-            box-shadow: 0 0 20px rgba(0, 255, 200, 0.3);
-            display: block;
-            margin: 0 auto;
-        }
+    .score {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
 
-        .scoreboard {
-            display: flex;
-            justify-content: space-around;
-            width: 800px;
-            margin-top: 20px;
-            font-size: 1.5em;
-        }
+    .score-value {
+      font-size: 2.5rem;
+      color: #00ffff;
+      text-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+    }
 
-        .score {
-            flex: 1;
-            padding: 10px;
-        }
+    .controls-info {
+      margin: 15px 0;
+      text-align: center;
+      font-size: 1rem;
+      color: #aaa;
+      max-width: 500px;
+    }
 
-        .player-score {
-            color: #00ffc8;
-        }
+    canvas {
+      background: #0a0a1a;
+      border: 3px solid #00ffff;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+      max-width: 100%;
+      height: auto;
+    }
 
-        .ai-score {
-            color: #ff006e;
-        }
+    .buttons {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
-        .instructions {
-            margin-top: 20px;
-            font-size: 0.9em;
-            color: #aaa;
-        }
+    button {
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      background: linear-gradient(45deg, #00ffff, #0080ff);
+      color: #0a0a1a;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 255, 255, 0.4);
+    }
 
-        .instructions p {
-            margin: 5px 0;
-        }
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 255, 255, 0.7);
+    }
 
-        .reset-button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            font-size: 1em;
-            background-color: #00ffc8;
-            color: #0f3460;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
+    button:active {
+      transform: translateY(1px);
+    }
 
-        .reset-button:hover {
-            background-color: #ff006e;
-            color: white;
-            transform: scale(1.05);
-        }
-    </style>
+    .difficulty {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .difficulty label {
+      font-size: 0.95rem;
+    }
+
+    .difficulty select {
+      padding: 8px 15px;
+      border-radius: 25px;
+      border: 2px solid #00ffff;
+      background: #1a1a2e;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .game-message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(26, 26, 46, 0.95);
+      padding: 30px 50px;
+      border-radius: 20px;
+      border: 2px solid #00ffff;
+      text-align: center;
+      display: none;
+      z-index: 10;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+    }
+
+    .game-message.show {
+      display: block;
+    }
+
+    .game-message h2 {
+      margin-bottom: 15px;
+      color: #00ffff;
+      font-size: 1.8rem;
+    }
+
+    .game-message p {
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 1.8rem; }
+      .score-board { gap: 25px; font-size: 1.2rem; }
+      .score-value { font-size: 2rem; }
+      canvas { width: 100%; max-width: 480px; }
+      button { padding: 10px 25px; font-size: 1rem; }
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 1.5rem; }
+      .score-board { gap: 15px; font-size: 1rem; }
+      .score-value { font-size: 1.8rem; }
+      .controls-info { font-size: 0.9rem; }
+      .game-message { padding: 20px 30px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎮 PONG GAME 🎮</h1>
-        <canvas id="pongCanvas" width="800" height="400"></canvas>
-        <div class="scoreboard">
-            <div class="score">
-                <div>Player (Left)</div>
-                <div class="player-score" id="playerScore">0</div>
-            </div>
-            <div class="score">
-                <div>Computer (Right)</div>
-                <div class="ai-score" id="aiScore">0</div>
-            </div>
-        </div>
-        <div class="instructions">
-            <p>Use <strong>Arrow Up/Down</strong> or <strong>Mouse Movement</strong> to control your paddle</p>
-            <p>First to 5 wins!</p>
-        </div>
-        <button class="reset-button" onclick="resetGame()">Reset Game</button>
+  <h1>🎮 لعبة Pong - ضد الكمبيوتر</h1>
+
+  <div class="score-board">
+    <div class="score">
+      <span>أنت</span>
+      <span id="playerScore" class="score-value">0</span>
     </div>
+    <div class="score">
+      <span>الكمبيوتر</span>
+      <span id="computerScore" class="score-value">0</span>
+    </div>
+  </div>
 
-    <script>
-        const canvas = document.getElementById('pongCanvas');
-        const ctx = canvas.getContext('2d');
+  <div class="controls-info">
+    🖱️ حرك الماوس لأعلى ولأسفل للتحكم في المضرب<br>
+    ⌨️ أو استخدم الأسهم ↑ ↓ للتحكم
+  </div>
 
-        // Game constants
-        const PADDLE_WIDTH = 10;
-        const PADDLE_HEIGHT = 80;
-        const BALL_SIZE = 8;
-        const MAX_SCORE = 5;
+  <canvas id="gameCanvas" width="800" height="500"></canvas>
 
-        // Paddle objects
-        const player = {
-            x: 20,
-            y: canvas.height / 2 - PADDLE_HEIGHT / 2,
-            width: PADDLE_WIDTH,
-            height: PADDLE_HEIGHT,
-            dy: 0,
-            speed: 7,
-            score: 0
-        };
+  <div class="buttons">
+    <button id="startBtn">▶️ ابدأ اللعبة</button>
+    <button id="resetBtn">🔄 إعادة تعيين</button>
+  </div>
 
-        const computer = {
-            x: canvas.width - PADDLE_WIDTH - 20,
-            y: canvas.height / 2 - PADDLE_HEIGHT / 2,
-            width: PADDLE_WIDTH,
-            height: PADDLE_HEIGHT,
-            speed: 5.5,
-            score: 0
-        };
+  <div class="difficulty">
+    <label for="difficultySelect">مستوى الصعوبة:</label>
+    <select id="difficultySelect">
+      <option value="easy">سهل 😊</option>
+      <option value="medium" selected>متوسط 😐</option>
+      <option value="hard">صعب 😈</option>
+    </select>
+  </div>
 
-        // Ball object
-        const ball = {
-            x: canvas.width / 2,
-            y: canvas.height / 2,
-            size: BALL_SIZE,
-            velocityX: 5,
-            velocityY: 5,
-            maxVelocity: 8
-        };
+  <div id="gameMessage" class="game-message">
+    <h2 id="messageTitle">🎉 مبروك!</h2>
+    <p id="messageText">لقد فزت باللعبة!</p>
+    <button id="playAgainBtn">🔄 العب مرة أخرى</button>
+  </div>
 
-        let gameRunning = true;
-        let mouseY = canvas.height / 2;
+  <script>
+    // ==================== إعدادات اللعبة ====================
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // عناصر DOM
+    const playerScoreEl = document.getElementById('playerScore');
+    const computerScoreEl = document.getElementById('computerScore');
+    const startBtn = document.getElementById('startBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const difficultySelect = document.getElementById('difficultySelect');
+    const gameMessage = document.getElementById('gameMessage');
+    const messageTitle = document.getElementById('messageTitle');
+    const messageText = document.getElementById('messageText');
+    const playAgainBtn = document.getElementById('playAgainBtn');
 
-        // Input handling
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowUp' && player.y > 0) {
-                player.dy = -player.speed;
-            }
-            if (e.key === 'ArrowDown' && player.y < canvas.height - player.height) {
-                player.dy = player.speed;
-            }
-        });
+    // متغيرات اللعبة
+    let gameRunning = false;
+    let animationId;
+    
+    // إعدادات الصعوبة
+    const difficultySettings = {
+      easy: { aiSpeed: 3, aiError: 0.4 },
+      medium: { aiSpeed: 5, aiError: 0.2 },
+      hard: { aiSpeed: 8, aiError: 0.05 }
+    };
 
-        document.addEventListener('keyup', (e) => {
-            if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-                player.dy = 0;
-            }
-        });
+    // كائنات اللعبة
+    const ball = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      radius: 10,
+      speed: 6,
+      dx: 4,
+      dy: 2,
+      color: '#00ffff'
+    };
 
-        // Mouse movement control
-        document.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            mouseY = e.clientY - rect.top;
-        });
+    const paddleWidth = 12;
+    const paddleHeight = 100;
 
-        // Draw functions
-        function drawRect(x, y, width, height, color = 'white') {
-            ctx.fillStyle = color;
-            ctx.fillRect(x, y, width, height);
+    const player = {
+      x: 20,
+      y: canvas.height / 2 - paddleHeight / 2,
+      width: paddleWidth,
+      height: paddleHeight,
+      dy: 0,
+      speed: 8,
+      color: '#00ff88',
+      score: 0
+    };
+
+    const computer = {
+      x: canvas.width - 20 - paddleWidth,
+      y: canvas.height / 2 - paddleHeight / 2,
+      width: paddleWidth,
+      height: paddleHeight,
+      dy: 0,
+      speed: 5,
+      color: '#ff6b6b',
+      score: 0
+    };
+
+    // التحكم بالماوس
+    canvas.addEventListener('mousemove', (e) => {
+      if (!gameRunning) return;
+      const rect = canvas.getBoundingClientRect();
+      const mouseY = e.clientY - rect.top;
+      player.y = mouseY - player.height / 2;
+      keepPaddleInBounds(player);
+    });
+
+    // التحكم بلوحة المفاتيح
+    document.addEventListener('keydown', (e) => {
+      if (!gameRunning) return;
+      if (e.key === 'ArrowUp') {
+        player.y -= 20;
+        keepPaddleInBounds(player);
+      } else if (e.key === 'ArrowDown') {
+        player.y += 20;
+        keepPaddleInBounds(player);
+      }
+    });
+
+    // منع التمرير بالأسهم
+    window.addEventListener('keydown', (e) => {
+      if(['ArrowUp','ArrowDown','Space'].includes(e.code)) {
+        e.preventDefault();
+      }
+    });
+
+    function keepPaddleInBounds(paddle) {
+      if (paddle.y < 0) paddle.y = 0;
+      if (paddle.y + paddle.height > canvas.height) {
+        paddle.y = canvas.height - paddle.height;
+      }
+    }
+
+    // ==================== وظائف الرسم ====================
+    function drawRect(x, y, w, h, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, w, h);
+    }
+
+    function drawCircle(x, y, r, color) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawNet() {
+      ctx.setLineDash([10, 10]);
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2, 0);
+      ctx.lineTo(canvas.width / 2, canvas.height);
+      ctx.strokeStyle = 'rgba(0, 255, 255, 0.3)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    function draw() {
+      // مسح الشاشة
+      drawRect(0, 0, canvas.width, canvas.height, '#0a0a1a');
+      
+      // رسم الشبكة
+      drawNet();
+      
+      // رسم المضارب
+      drawRect(player.x, player.y, player.width, player.height, player.color);
+      drawRect(computer.x, computer.y, computer.width, computer.height, computer.color);
+      
+      // رسم الكرة
+      drawCircle(ball.x, ball.y, ball.radius, ball.color);
+      
+      // تأثير توهج للكرة
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = ball.color;
+      drawCircle(ball.x, ball.y, ball.radius, ball.color);
+      ctx.shadowBlur = 0;
+    }
+
+    // ==================== منطق اللعبة ====================
+    function resetBall() {
+      ball.x = canvas.width / 2;
+      ball.y = canvas.height / 2;
+      ball.speed = 6;
+      
+      // اتجاه عشوائي
+      const direction = Math.random() > 0.5 ? 1 : -1;
+      const angle = (Math.random() * Math.PI / 4) - Math.PI / 8;
+      ball.dx = direction * ball.speed * Math.cos(angle);
+      ball.dy = ball.speed * Math.sin(angle);
+    }
+
+    function update() {
+      if (!gameRunning) return;
+
+      // تحريك الكرة
+      ball.x += ball.dx;
+      ball.y += ball.dy;
+
+      // ارتداد الكرة من الحواف العلوية والسفلية
+      if (ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height) {
+        ball.dy *= -1;
+        ball.y = ball.y < canvas.height/2 ? ball.radius : canvas.height - ball.radius;
+      }
+
+      // اكتشاف التصادم مع المضارب
+      if (
+        ball.x - ball.radius < player.x + player.width &&
+        ball.x + ball.radius > player.x &&
+        ball.y > player.y &&
+        ball.y < player.y + player.height
+      ) {
+        handlePaddleCollision(player);
+      }
+
+      if (
+        ball.x + ball.radius > computer.x &&
+        ball.x - ball.radius < computer.x + computer.width &&
+        ball.y > computer.y &&
+        ball.y < computer.y + computer.height
+      ) {
+        handlePaddleCollision(computer);
+      }
+
+      // تسجيل النقاط
+      if (ball.x < 0) {
+        computer.score++;
+        computerScoreEl.textContent = computer.score;
+        checkWinCondition();
+        resetBall();
+      } else if (ball.x > canvas.width) {
+        player.score++;
+        playerScoreEl.textContent = player.score;
+        checkWinCondition();
+        resetBall();
+      }
+
+      // ذكاء الكمبيوتر
+      moveComputerAI();
+
+      // تحديث موضع اللاعب (للتحكم بلوحة المفاتيح)
+      player.y += player.dy;
+      keepPaddleInBounds(player);
+    }
+
+    function handlePaddleCollision(paddle) {
+      // عكس اتجاه الكرة
+      ball.dx *= -1;
+      
+      // زيادة سرعة الكرة قليلاً
+      ball.speed += 0.3;
+      
+      // تعديل زاوية الكرة بناءً على مكان الاصطدام بالمضرب
+      const collidePoint = (ball.y - (paddle.y + paddle.height/2)) / (paddle.height/2);
+      ball.dy = ball.speed * collidePoint * 0.7;
+      
+      // منع الكرة من التوقف عمودياً
+      if (Math.abs(ball.dy) < 1) {
+        ball.dy = ball.dy > 0 ? 1 : -1;
+      }
+    }
+
+    function moveComputerAI() {
+      const settings = difficultySettings[difficultySelect.value];
+      computer.speed = settings.aiSpeed;
+      
+      // محاكاة خطأ الذكاء الاصطناعي
+      if (Math.random() > settings.aiError) {
+        const computerCenter = computer.y + computer.height / 2;
+        const diff = ball.y - computerCenter;
+        
+        if (Math.abs(diff) > 10) {
+          computer.y += Math.sign(diff) * computer.speed;
         }
+      }
+      
+      keepPaddleInBounds(computer);
+    }
 
-        function drawCircle(x, y, size, color = 'white') {
-            ctx.fillStyle = color;
-            ctx.beginPath();
-            ctx.arc(x, y, size, 0, Math.PI * 2);
-            ctx.closePath();
-            ctx.fill();
+    function checkWinCondition() {
+      const winScore = 5;
+      if (player.score >= winScore || computer.score >= winScore) {
+        gameRunning = false;
+        cancelAnimationFrame(animationId);
+        
+        if (player.score > computer.score) {
+          messageTitle.textContent = '🎉 مبروك!';
+          messageText.textContent = `لقد فزت! ${player.score} - ${computer.score}`;
+        } else {
+          messageTitle.textContent = '😢 حاول مرة أخرى';
+          messageText.textContent = `فاز الكمبيوتر! ${computer.score} - ${player.score}`;
         }
+        gameMessage.classList.add('show');
+      }
+    }
 
-        function drawText(text, x, y, size = '20px', color = 'white') {
-            ctx.fillStyle = color;
-            ctx.font = `${size} Arial`;
-            ctx.textAlign = 'center';
-            ctx.fillText(text, x, y);
-        }
+    function gameLoop() {
+      update();
+      draw();
+      if (gameRunning) {
+        animationId = requestAnimationFrame(gameLoop);
+      }
+    }
 
-        function drawMiddleLine() {
-            ctx.strokeStyle = 'rgba(0, 255, 200, 0.2)';
-            ctx.setLineDash([10, 10]);
-            ctx.beginPath();
-            ctx.moveTo(canvas.width / 2, 0);
-            ctx.lineTo(canvas.width / 2, canvas.height);
-            ctx.stroke();
-            ctx.setLineDash([]);
-        }
+    // ==================== أزرار التحكم ====================
+    startBtn.addEventListener('click', () => {
+      if (gameRunning) return;
+      
+      gameRunning = true;
+      gameMessage.classList.remove('show');
+      resetBall();
+      gameLoop();
+      startBtn.textContent = '⏸️ إيقاف مؤقت';
+    });
 
-        // Update player paddle
-        function updatePlayer() {
-            // Keyboard control
-            player.y += player.dy;
+    resetBtn.addEventListener('click', () => {
+      gameRunning = false;
+      cancelAnimationFrame(animationId);
+      player.score = 0;
+      computer.score = 0;
+      playerScoreEl.textContent = '0';
+      computerScoreEl.textContent = '0';
+      player.y = canvas.height/2 - player.height/2;
+      computer.y = canvas.height/2 - computer.height/2;
+      resetBall();
+      draw();
+      startBtn.textContent = '▶️ ابدأ اللعبة';
+      gameMessage.classList.remove('show');
+    });
 
-            // Mouse control (alternative)
-            const mouseControl = false; // Set to true to use mouse control
-            if (mouseControl) {
-                player.y = mouseY - player.height / 2;
-            }
+    playAgainBtn.addEventListener('click', () => {
+      resetBtn.click();
+      startBtn.click();
+    });
 
-            // Boundary check
-            if (player.y < 0) player.y = 0;
-            if (player.y + player.height > canvas.height) {
-                player.y = canvas.height - player.height;
-            }
-        }
+    // تغيير الصعوبة أثناء اللعبة
+    difficultySelect.addEventListener('change', () => {
+      if (gameRunning) {
+        computer.speed = difficultySettings[difficultySelect.value].aiSpeed;
+      }
+    });
 
-        // Update computer paddle (AI)
-        function updateComputer() {
-            const computerCenter = computer.y + computer.height / 2;
-            const ballCenter = ball.y;
+    // ==================== التهيئة الأولية ====================
+    // دعم اللمس للأجهزة المحمولة
+    canvas.addEventListener('touchmove', (e) => {
+      if (!gameRunning) return;
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const touchY = e.touches[0].clientY - rect.top;
+      player.y = touchY - player.height / 2;
+      keepPaddleInBounds(player);
+    }, { passive: false });
 
-            // AI follows the ball with some difficulty adjustment
-            if (computerCenter < ballCenter - 35) {
-                computer.y += computer.speed;
-            } else if (computerCenter > ballCenter + 35) {
-                computer.y -= computer.speed;
-            }
-
-            // Boundary check
-            if (computer.y < 0) computer.y = 0;
-            if (computer.y + computer.height > canvas.height) {
-                computer.y = canvas.height - computer.height;
-            }
-        }
-
-        // Update ball
-        function updateBall() {
-            ball.x += ball.velocityX;
-            ball.y += ball.velocityY;
-
-            // Top and bottom wall collision
-            if (ball.y - ball.size < 0) {
-                ball.y = ball.size;
-                ball.velocityY = -ball.velocityY;
-            }
-            if (ball.y + ball.size > canvas.height) {
-                ball.y = canvas.height - ball.size;
-                ball.velocityY = -ball.velocityY;
-            }
-
-            // Player paddle collision
-            if (
-                ball.x - ball.size < player.x + player.width &&
-                ball.y > player.y &&
-                ball.y < player.y + player.height
-            ) {
-                ball.x = player.x + player.width + ball.size;
-                ball.velocityX = -ball.velocityX;
-
-                // Add spin based on paddle movement
-                const deltaY = ball.y - (player.y + player.height / 2);
-                ball.velocityY = deltaY * 0.2;
-
-                // Increase speed slightly (cap at maxVelocity)
-                if (Math.abs(ball.velocityX) < ball.maxVelocity) {
-                    ball.velocityX *= 1.05;
-                }
-            }
-
-            // Computer paddle collision
-            if (
-                ball.x + ball.size > computer.x &&
-                ball.y > computer.y &&
-                ball.y < computer.y + computer.height
-            ) {
-                ball.x = computer.x - ball.size;
-                ball.velocityX = -ball.velocityX;
-
-                // Add spin based on paddle movement
-                const deltaY = ball.y - (computer.y + computer.height / 2);
-                ball.velocityY = deltaY * 0.2;
-
-                // Increase speed slightly (cap at maxVelocity)
-                if (Math.abs(ball.velocityX) < ball.maxVelocity) {
-                    ball.velocityX *= 1.05;
-                }
-            }
-
-            // Score points
-            if (ball.x - ball.size < 0) {
-                computer.score++;
-                updateScore();
-                resetBall();
-                checkGameOver();
-            }
-            if (ball.x + ball.size > canvas.width) {
-                player.score++;
-                updateScore();
-                resetBall();
-                checkGameOver();
-            }
-        }
-
-        // Reset ball to center
-        function resetBall() {
-            ball.x = canvas.width / 2;
-            ball.y = canvas.height / 2;
-            ball.velocityX = 5 * (Math.random() > 0.5 ? 1 : -1);
-            ball.velocityY = (Math.random() - 0.5) * 4;
-        }
-
-        // Update scoreboard
-        function updateScore() {
-            document.getElementById('playerScore').textContent = player.score;
-            document.getElementById('aiScore').textContent = computer.score;
-        }
-
-        // Check for game over
-        function checkGameOver() {
-            if (player.score >= MAX_SCORE || computer.score >= MAX_SCORE) {
-                gameRunning = false;
-                const winner = player.score >= MAX_SCORE ? 'Player' : 'Computer';
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                drawText(`${winner} Wins!`, canvas.width / 2, canvas.height / 2 - 20, '40px', '#00ffc8');
-                drawText('Press Reset Game to play again', canvas.width / 2, canvas.height / 2 + 30, '16px', '#aaa');
-            }
-        }
-
-        // Render game
-        function render() {
-            // Clear canvas
-            ctx.fillStyle = '#0f3460';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Draw middle line
-            drawMiddleLine();
-
-            // Draw paddles
-            drawRect(player.x, player.y, player.width, player.height, '#00ffc8');
-            drawRect(computer.x, computer.y, computer.width, computer.height, '#ff006e');
-
-            // Draw ball
-            drawCircle(ball.x, ball.y, ball.size, 'white');
-        }
-
-        // Game loop
-        function gameLoop() {
-            if (gameRunning) {
-                updatePlayer();
-                updateComputer();
-                updateBall();
-            }
-            render();
-            requestAnimationFrame(gameLoop);
-        }
-
-        // Reset game function
-        function resetGame() {
-            player.score = 0;
-            computer.score = 0;
-            gameRunning = true;
-            player.y = canvas.height / 2 - PADDLE_HEIGHT / 2;
-            computer.y = canvas.height / 2 - PADDLE_HEIGHT / 2;
-            resetBall();
-            updateScore();
-        }
-
-        // Start the game
-        gameLoop();
-    </script>
+    // رسم الشاشة الأولية
+    draw();
+    
+    // رسالة ترحيبية
+    setTimeout(() => {
+      messageTitle.textContent = '🎮 مرحباً بك!';
+      messageText.textContent = 'اضغط على "ابدأ اللعبة" للعب ضد الكمبيوتر';
+      gameMessage.classList.add('show');
+    }, 500);
+  </script>
 </body>
 </html>
