@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رخصة فورتنايت</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;400;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0a0a1a;
+            --card-bg: #111128;
+            --accent: #00d4ff;
+            --accent2: #f000ff;
+            --gold: #ffd700;
+            --text: #e8e8f0;
+            --muted: #6a6a8a;
+            --border: #2a2a4a;
+            --glow: rgba(0, 212, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* خلفية متحركة */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-layer::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(ellipse 600px 400px at 20% 30%, rgba(0, 212, 255, 0.08), transparent),
+                radial-gradient(ellipse 500px 500px at 80% 70%, rgba(240, 0, 255, 0.06), transparent),
+                radial-gradient(ellipse 400px 300px at 50% 50%, rgba(255, 215, 0, 0.03), transparent);
+            animation: bgFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes bgFloat {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -20px) rotate(1deg); }
+            66% { transform: translate(-20px, 15px) rotate(-1deg); }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 8s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(0deg); }
+            100% { transform: perspective(500px) rotateX(0deg) translateY(60px); }
+        }
+
+        /* جسيمات متحركة */
+        .particle {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        /* الهيدر */
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-top: 20px;
+        }
+
+        .fortnite-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.2rem, 6vw, 3.8rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent), var(--accent2), var(--gold));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease-in-out infinite;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+        }
+
+        .fortnite-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+            animation: lineGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes lineGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .page-subtitle {
+            color: var(--muted);
+            font-size: 1.1rem;
+            margin-top: 16px;
+            font-weight: 400;
+        }
+
+        /* نموذج الإدخال */
+        .form-section {
+            background: linear-gradient(145deg, rgba(17, 17, 40, 0.9), rgba(10, 10, 30, 0.95));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .form-title i {
+            color: var(--accent);
+            font-size: 1.3rem;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+
+        .input-group label i {
+            margin-left: 6px;
+            color: var(--accent);
+            font-size: 0.85rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 1rem;
+            font-family: 'Tajawal', sans-serif;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--glow), inset 0 0 20px rgba(0, 212, 255, 0.05);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .input-field::placeholder {
+            color: var(--muted);
+        }
+
+        /* اختيار المستوى */
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .level-card {
+            position: relative;
+            padding: 16px 12px;
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.02);
+            overflow: hidden;
+        }
+
+        .level-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: 12px;
+        }
+
+        .level-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .level-card.selected {
+            transform: translateY(-3px);
+        }
+
+        .level-card[data-level="beginner"].selected {
+            border-color: #4ade80;
+            box-shadow: 0 0 25px rgba(74, 222, 128, 0.2);
+        }
+        .level-card[data-level="beginner"].selected::before {
+            opacity: 1;
+            background: rgba(74, 222, 128, 0.05);
+        }
+
+        .level-card[data-level="intermediate"].selected {
+            border-color: var(--accent);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.2);
+        }
+        .level-card[data-level="intermediate"].selected::before {
+            opacity: 1;
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .level-card[data-level="advanced"].selected {
+            border-color: var(--accent2);
+            box-shadow: 0 0 25px rgba(240, 0, 255, 0.2);
+        }
+        .level-card[data-level="advanced"].selected::before {
+            opacity: 1;
+            background: rgba(240, 0, 255, 0.05);
+        }
+
+        .level-card[data-level="pro"].selected {
+            border-color: var(--gold);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.25);
+        }
+        .level-card[data-level="pro"].selected::before {
+            opacity: 1;
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .level-icon {
+            font-size: 1.8rem;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .level-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .level-card input[type="radio"] {
+            display: none;
+        }
+
+        /* زر التوليد */
+        .generate-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.15rem;
+            font-weight: 900;
+            font-family: 'Tajawal', sans-serif;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #fff;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        .generate-btn i {
+            margin-left: 8px;
+        }
+
+        .generate-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: btnShine 3s ease-in-out infinite;
+        }
+
+        @keyframes btnShine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            50%, 100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        /* منطقة النتيجة */
+        .result-section {
+            display: none;
+            animation: fadeSlideIn 0.6s ease;
+        }
+
+        .result-section.visible {
+            display: block;
+        }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .license-wrapper {
+            position: relative;
+            margin: 0 auto;
+            max-width: 700px;
+        }
+
+        /* الكانفاس */
+        #licenseCanvas {
+            width: 100%;
+            border-radius: 16px;
+            display: block;
+            box-shadow: 
+                0 0 40px rgba(0, 212, 255, 0.15),
+                0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        /* أزرار التحميل */
+        .action-buttons {
+            display: flex;
+            gap: 14px;
+            margin-top: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 12px 28px;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text);
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: 'Tajawal', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            border-color: var(--accent);
+            background: rgba(0, 212, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-color: transparent;
+            color: #fff;
+        }
+
+        .action-btn.primary:hover {
+            box-shadow: 0 6px 25px rgba(0, 212, 255, 0.3);
+        }
+
+        /* رسالة الخطأ */
+        .error-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            z-index: 1000;
+            transition: transform 0.4s ease;
+            box-shadow: 0 8px 30px rgba(255, 0, 0, 0.3);
+        }
+
+        .error-toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* تأثير النجاح */
+        .success-flash {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 212, 255, 0.05);
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .success-flash.active {
+            opacity: 1;
+            animation: flashOut 0.8s ease forwards;
+        }
+
+        @keyframes flashOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* تذييل */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--muted);
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .form-section {
+                padding: 24px 18px;
+            }
+            .level-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .main-content {
+                padding: 20px 14px 60px;
+            }
+        }
+
+        /* تحريك عند التمرير */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="grid-overlay"></div>
+<div class="success-flash" id="successFlash"></div>
+<div class="error-toast" id="errorToast"></div>
+
+<main class="main-content">
+    <!-- الهيدر -->
+    <header class="page-header reveal">
+        <div class="fortnite-logo">FORTNITE LICENSE</div>
+        <p class="page-subtitle">أنشئ رخصة فورتنايت الرسمية الخاصة بك وشاركها مع أصدقائك</p>
+    </header>
+
+    <!-- نموذج الإدخال -->
+    <section class="form-section reveal" id="formSection">
+        <div class="form-title">
+            <i class="fas fa-id-card"></i>
+            بيانات الرخصة
+        </div>
+
+        <div class="input-group">
+            <label><i class="fas fa-user"></i> الاسم الكامل</label>
+            <input type="text" class="input-field" id="fullName" placeholder="أدخل اسمك الكامل..." maxlength="40">
+        </div>
+
+        <div class="input-group">
+            <label><i class="fas fa-gamepad"></i> اسمك في فورتنايت</label>
+            <input type="text" class="input-field" id="fortniteName" placeholder="أدخل اسمك في اللعبة..." maxlength="30">
+        </div>
+
+        <div class="input-group">
+            <label><i class="fas fa-signal"></i> مستوى اللعب</label>
+            <div class="level-grid" id="levelGrid">
+                <label class="level-card" data-level="beginner">
+                    <input type="radio" name="level" value="beginner">
+                    <span class="level-icon">&#127793;</span>
+                    <span class="level-name">مبتدئ</span>
+                </label>
+                <label class="level-card" data-level="intermediate">
+                    <input type="radio" name="level" value="intermediate">
+                    <span class="level-icon">&#9876;&#65039;</span>
+                    <span class="level-name">متوسط</span>
+                </label>
+                <label class="level-card" data-level="advanced">
+                    <input type="radio" name="level" value="advanced">
+                    <span class="level-icon">&#128293;</span>
+                    <span class="level-name">متقدم</span>
+                </label>
+                <label class="level-card" data-level="pro">
+                    <input type="radio" name="level" value="pro">
+                    <span class="level-icon">&#127775;</span>
+                    <span class="level-name">محترف</span>
+                </label>
+            </div>
+        </div>
+
+        <button class="generate-btn" id="generateBtn">
+            <i class="fas fa-wand-magic-sparkles"></i>
+            إنشاء الرخصة
+        </button>
+    </section>
+
+    <!-- النتيجة -->
+    <section class="result-section" id="resultSection">
+        <div class="license-wrapper">
+            <canvas id="licenseCanvas" width="1400" height="800"></canvas>
+        </div>
+        <div class="action-buttons">
+            <button class="action-btn primary" id="downloadBtn">
+                <i class="fas fa-download"></i>
+                تحميل الصورة
+            </button>
+            <button class="action-btn" id="newBtn">
+                <i class="fas fa-rotate"></i>
+                إنشاء رخصة جديدة
+            </button>
+        </div>
+    </section>
+</main>
+
+<footer>
+    صُنع بـ <i class="fas fa-heart" style="color:var(--accent2)"></i> للاعبين فورتنايت &mdash; ليست رسمية من Epic Games
+</footer>
+
+<script>
+// ==================== الجسيمات المتحركة ====================
+(function createParticles() {
+    const colors = ['rgba(0,212,255,0.4)', 'rgba(240,0,255,0.3)', 'rgba(255,215,0,0.3)'];
+    for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.left = Math.random() * 100 + '%';
+        p.style.top = Math.random() * 100 + '%';
+        p.style.boxShadow = `0 0 ${6 + Math.random() * 8}px ${p.style.background}`;
+        const dur = 8 + Math.random() * 12;
+        const delay = Math.random() * -20;
+        p.style.animation = `particleFloat ${dur}s ${delay}s ease-in-out infinite`;
+        document.body.appendChild(p);
+    }
+
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes particleFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            25% { transform: translate(${rand()}px, ${rand()}px) scale(1.3); opacity: 0.7; }
+            50% { transform: translate(${rand()}px, ${rand()}px) scale(0.8); opacity: 0.5; }
+            75% { transform: translate(${rand()}px, ${rand()}px) scale(1.1); opacity: 0.6; }
+        }
+    `;
+    document.head.appendChild(style);
+
+    function rand() { return (Math.random() - 0.5) * 120; }
+})();
+
+// ==================== تحريك الظهور ====================
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+// تفعيل الأول مباشرة
+setTimeout(() => reveals.forEach(el => el.classList.add('visible')), 100);
+
+// ==================== اختيار المستوى ====================
+const levelCards = document.querySelectorAll('.level-card');
+levelCards.forEach(card => {
+    card.addEventListener('click', () => {
+        levelCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        card.querySelector('input').checked = true;
+    });
+});
+
+// ==================== بيانات المستويات ====================
+const levelData = {
+    beginner:     { ar: 'مبتدئ',   en: 'BEGINNER',     color: '#4ade80', tier: 'I',   stars: 1 },
+    intermediate: { ar: 'متوسط',   en: 'INTERMEDIATE', color: '#00d4ff', tier: 'II',  stars: 2 },
+    advanced:     { ar: 'متقدم',   en: 'ADVANCED',     color: '#f000ff', tier: 'III', stars: 3 },
+    pro:          { ar: 'محترف',   en: 'PRO',          color: '#ffd700', tier: 'IV',  stars: 4 }
+};
+
+// ==================== إنشاء رقم الرخصة ====================
+function generateLicenseNumber() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = 'FN-';
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            result += chars[Math.floor(Math.random() * chars.length)];
+        }
+        if (i < 3) result += '-';
+    }
+    return result;
+}
+
+// ==================== رسالة الخطأ ====================
+function showError(msg) {
+    const toast = document.getElementById('errorToast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ==================== توليد الرخصة ====================
+document.getElementById('generateBtn').addEventListener('click', generateLicense);
+
+function generateLicense() {
+    const fullName = document.getElementById('fullName').value.trim();
+    const fortniteName = document.getElementById('fortniteName').value.trim();
+    const levelRadio = document.querySelector('input[name="level"]:checked');
+
+    // التحقق من المدخلات
+    if (!fullName) { showError('يرجى إدخال الاسم الكامل'); return; }
+    if (!fortniteName) { showError('يرجى إدخال اسم فورتنايت'); return; }
+    if (!levelRadio) { showError('يرجى اختيار مستوى اللعب'); return; }
+
+    const level = levelRadio.value;
+    const ld = levelData[level];
+    const licenseNum = generateLicenseNumber();
+
+    // رسم الكانفاس
+    drawLicense(fullName, fortniteName, ld, licenseNum);
+
+    // إظهار النتيجة
+    const result = document.getElementById('resultSection');
+    result.classList.add('visible');
+    result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // تأثير النجاح
+    const flash = document.getElementById('successFlash');
+    flash.classList.add('active');
+    setTimeout(() => flash.classList.remove('active'), 800);
+}
+
+// ==================== رسم الرخصة على الكانفاس ====================
+function drawLicense(fullName, fortniteName, levelData, licenseNum) {
+    const canvas = document.getElementById('licenseCanvas');
+    const ctx = canvas.getContext('2d');
+    const W = 1400, H = 800;
+    canvas.width = W;
+    canvas.height = H;
+
+    const lc = levelData.color;
+
+    // ---- خلفية البطاقة ----
+    // تدرج رئيسي
+    const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+    bgGrad.addColorStop(0, '#0d0d2b');
+    bgGrad.addColorStop(0.5, '#12123a');
+    bgGrad.addColorStop(1, '#0a0a22');
+    ctx.fillStyle = bgGrad;
+    roundRect(ctx, 0, 0, W, H, 24);
+    ctx.fill();
+
+    // ---- إطار خارجي متوهج ----
+    ctx.save();
+    ctx.strokeStyle = lc;
+    ctx.lineWidth = 3;
+    ctx.shadowColor = lc;
+    ctx.shadowBlur = 20;
+    roundRect(ctx, 6, 6, W - 12, H - 12, 20);
+    ctx.stroke();
+    ctx.restore();
+
+    // إطار داخلي
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1;
+    roundRect(ctx, 20, 20, W - 40, H - 40, 14);
+    ctx.stroke();
+
+    // ---- خطوط زخرفية في الخلفية ----
+    ctx.save();
+    ctx.globalAlpha = 0.03;
+    for (let i = 0; i < 40; i++) {
+        ctx.beginPath();
+        ctx.moveTo(0, i * 20);
+        ctx.lineTo(W, i * 20);
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+    }
+    ctx.restore();
+
+    // ---- شكل هندسي زخرفي (سداسيات) ----
+    ctx.save();
+    ctx.globalAlpha = 0.04;
+    for (let i = 0; i < 6; i++) {
+        const cx = 1100 + Math.cos(i) * 80;
+        const cy = 400 + Math.sin(i) * 80;
+        drawHexagon(ctx, cx, cy, 60 + i * 10);
+    }
+    ctx.restore();
+
+    // ---- شريط علوي ----
+    const topGrad = ctx.createLinearGradient(0, 0, W, 0);
+    topGrad.addColorStop(0, lc + '30');
+    topGrad.addColorStop(0.5, lc + '10');
+    topGrad.addColorStop(1, lc + '30');
+    ctx.fillStyle = topGrad;
+    ctx.fillRect(30, 30, W - 60, 80);
+
+    // خط تحت الشريط
+    ctx.strokeStyle = lc + '60';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(30, 110);
+    ctx.lineTo(W - 30, 110);
+    ctx.stroke();
+
+    // ---- نص FORTNITE في الأعلى ----
+    ctx.save();
+    ctx.font = '900 38px Orbitron, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    // ظل متوهج
+    ctx.shadowColor = lc;
+    ctx.shadowBlur = 25;
+    ctx.fillStyle = lc;
+    ctx.fillText('FORTNITE', 50, 70);
+    ctx.restore();
+
+    // نص LICENSE
+    ctx.save();
+    ctx.font = '200 32px Orbitron, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.fillText('LICENSE', 340, 70);
+    ctx.restore();
+
+    // شارة المستوى أعلى اليمين
+    ctx.save();
+    ctx.font = '900 22px Orbitron, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillStyle = lc;
+    ctx.shadowColor = lc;
+    ctx.shadowBlur = 15;
+    ctx.fillText(levelData.en + ' ' + levelData.tier, W - 50, 62);
+    ctx.restore();
+
+    // نجوم المستوى
+    ctx.save();
+    ctx.font = '20px sans-serif';
+    ctx.textAlign = 'right';
+    let starStr = '';
+    for (let i = 0; i < levelData.stars; i++) starStr += '\u2605 ';
+    ctx.fillStyle = lc;
+    ctx.fillText(starStr.trim(), W - 50, 90);
+    ctx.restore();
+
+    // ---- الصورة الشخصية (إطار) ----
+    const avatarX = 80, avatarY = 180, avatarW = 220, avatarH = 260;
+    // خلفية الصورة
+    ctx.save();
+    ctx.fillStyle = 'rgba(255,255,255,0.03)';
+    roundRect(ctx, avatarX, avatarY, avatarW, avatarH, 16);
+    ctx.fill();
+    // إطار الصورة
+    ctx.strokeStyle = lc + '80';
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = lc;
+    ctx.shadowBlur = 15;
+    roundRect(ctx, avatarX, avatarY, avatarW, avatarH, 16);
+    ctx.stroke();
+    ctx.restore();
+
+    // أيقونة لاعب في المنتصف
+    ctx.save();
+    ctx.fillStyle = lc + '40';
+    ctx.font = '80px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('\u{1F3AE}', avatarX + avatarW / 2, avatarY + avatarH / 2);
+    ctx.restore();
+
+    // نص "PLAYER" تحت الإطار
+    ctx.save();
+    ctx.font = '700 14px Orbitron, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = lc + '80';
+    ctx.letterSpacing = '4px';
+    ctx.fillText('PLAYER', avatarX + avatarW / 2, avatarY + avatarH + 24);
+    ctx.restore();
+
+    // ---- البيانات الرئيسية ----
+    const dataX = 360;
+    let dataY = 170;
+
+    // اسم فورتنايت
+    ctx.save();
+    ctx.font = '900 48px Tajawal, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#ffffff';
+    ctx.shadowColor = lc;
+    ctx.shadowBlur = 20;
+    ctx.fillText(fortniteName, dataX, dataY);
+    ctx.restore();
+
+    dataY += 50;
+
+    // خط فاصل
+    ctx.save();
+    const lineGrad = ctx.createLinearGradient(dataX, 0, dataX + 500, 0);
+    lineGrad.addColorStop(0, lc + '80');
+    lineGrad.addColorStop(1, 'transparent');
+    ctx.strokeStyle = lineGrad;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(dataX, dataY);
+    ctx.lineTo(dataX + 500, dataY);
+    ctx.stroke();
+    ctx.restore();
+
+    dataY += 40;
+
+    // الاسم الكامل
+    drawLabelValue(ctx, 'الاسم الكامل', fullName, dataX, dataY, lc);
+    dataY += 65;
+
+    // المستوى
+    drawLabelValue(ctx, 'مستوى اللعب', levelData.ar + ' (' + levelData.en + ')', dataX, dataY, lc);
+    dataY += 65;
+
+    // رقم الرخصة
+    drawLabelValue(ctx, 'رقم الرخصة', licenseNum, dataX, dataY, lc);
+    dataY += 65;
+
+    // تاريخ الإصدار
+    const today = new Date();
+    const dateStr = today.getFullYear() + '/' + String(today.getMonth() + 1).padStart(2, '0') + '/' + String(today.getDate()).padStart(2, '0');
+    const expDate = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
+    const expStr = expDate.getFullYear() + '/' + String(expDate.getMonth() + 1).padStart(2, '0') + '/' + String(expDate.getDate()).padStart(2, '0');
+    drawLabelValue(ctx, 'تاريخ الإصدار', dateStr, dataX, dataY, lc);
+
+    // تاريخ الانتهاء على اليمين
+    drawLabelValue(ctx, 'تاريخ الانتهاء', expStr, dataX + 460, dataY, lc);
+
+    // ---- شريط سفلي ----
+    const bottomY = H - 80;
+    ctx.save();
+    const botGrad = ctx.createLinearGradient(0, 0, W, 0);
+    botGrad.addColorStop(0, lc + '20');
+    botGrad.addColorStop(0.5, lc + '08');
+    botGrad.addColorStop(1, lc + '20');
+    ctx.fillStyle = botGrad;
+    ctx.fillRect(30, bottomY, W - 60, 50);
+    ctx.restore();
+
+    // خط فوق الشريط
+    ctx.strokeStyle = lc + '40';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(30, bottomY);
+    ctx.lineTo(W - 30, bottomY);
+    ctx.stroke();
+
+    // نص الشريط السفلي
+    ctx.save();
+    ctx.font = '700 16px Tajawal, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.fillText('هذه الرخصة غير رسمية وهي لأغراض الترفيه فقط  |  NOT AN OFFICIAL EPIC GAMES PRODUCT', W / 2, bottomY + 25);
+    ctx.restore();
+
+    // ---- باركود مزيف ----
+    drawBarcode(ctx, W - 200, bottomY - 120, 140, 70, lc);
+
+    // ---- ختم المستوى ----
+    drawStamp(ctx, W - 150, 300, 70, lc, levelData.tier);
+
+    // ---- زخرفة الجوانب ----
+    // نقاط متفرقة
+    ctx.save();
+    ctx.globalAlpha = 0.15;
+    for (let i = 0; i < 50; i++) {
+        const px = 40 + Math.random() * (W - 80);
+        const py = 120 + Math.random() * (H - 220);
+        const r = 1 + Math.random() * 2;
+        ctx.beginPath();
+        ctx.arc(px, py, r, 0, Math.PI * 2);
+        ctx.fillStyle = lc;
+        ctx.fill();
+    }
+    ctx.restore();
+
+    // توهج كبير في الخلفية
+    ctx.save();
+    ctx.globalAlpha = 0.06;
+    const radGrad = ctx.createRadialGradient(W * 0.7, H * 0.3, 0, W * 0.7, H * 0.3, 400);
+    radGrad.addColorStop(0, lc);
+    radGrad.addColorStop(1, 'transparent');
+    ctx.fillStyle = radGrad;
+    ctx.fillRect(0, 0, W, H);
+    ctx.restore();
+}
+
+// ==================== دوال الرسم المساعدة ====================
+
+function roundRect(ctx, x, y, w, h, r) {
+    r = Math.max(0, Math.min(r, Math.min(w, h) / 2));
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+}
+
+function drawLabelValue(ctx, label, value, x, y, accentColor) {
+    // التسمية
+    ctx.save();
+    ctx.font = '700 16px Tajawal, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = accentColor + 'aa';
+    ctx.fillText(label, x, y);
+    ctx.restore();
+
+    // القيمة
+    ctx.save();
+    ctx.font = '700 26px Tajawal, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#e8e8f0';
+    ctx.fillText(value, x, y + 32);
+    ctx.restore();
+}
+
+function drawHexagon(ctx, cx, cy, size) {
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++) {
+        const angle = (Math.PI / 3) * i - Math.PI / 6;
+        const x = cx + size * Math.cos(angle);
+        const y = cy + size * Math.sin(angle);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+}
+
+function drawBarcode(ctx, x, y, w, h, color) {
+    ctx.save();
+    ctx.globalAlpha = 0.3;
+    const barCount = 40;
+    const barW = w / barCount;
+    for (let i = 0; i < barCount; i++) {
+        if (Math.random() > 0.4) {
+            const bw = barW * (0.5 + Math.random() * 0.8);
+            ctx.fillStyle = color;
+            ctx.fillRect(x + i * barW, y, bw, h);
+        }
+    }
+    ctx.restore();
+}
+
+function drawStamp(ctx, cx, cy, radius, color, tier) {
+    ctx.save();
+    // دائرة خارجية
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = color + '60';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // دائرة داخلية
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius - 10, 0, Math.PI * 2);
+    ctx.strokeStyle = color + '40';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // نص التير
+    ctx.font = '900 36px Orbitron, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = color + '80';
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 15;
+    ctx.fillText(tier, cx, cy);
+
+    // نص RANK حول الدائرة
+    ctx.font = '700 10px Orbitron, sans-serif';
+    ctx.fillStyle = color + '50';
+    ctx.shadowBlur = 0;
+    const words = 'RANK RANK RANK RANK';
+    for (let i = 0; i < words.length; i++) {
+        const angle = (i / words.length) * Math.PI * 2 - Math.PI / 2;
+        const tx = cx + (radius - 5) * Math.cos(angle);
+        const ty = cy + (radius - 5) * Math.sin(angle);
+        ctx.save();
+        ctx.translate(tx, ty);
+        ctx.rotate(angle + Math.PI / 2);
+        ctx.fillText(words[i], 0, 0);
+        ctx.restore();
+    }
+
+    ctx.restore();
+}
+
+// ==================== تحميل الصورة ====================
+document.getElementById('downloadBtn').addEventListener('click', () => {
+    const canvas = document.getElementById('licenseCanvas');
+    const link = document.createElement('a');
+    link.download = 'fortnite-license.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+});
+
+// ==================== رخصة جديدة ====================
+document.getElementById('newBtn').addEventListener('click', () => {
+    document.getElementById('resultSection').classList.remove('visible');
+    document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
+    // مسح المدخلات
+    document.getElementById('fullName').value = '';
+    document.getElementById('fortniteName').value = '';
+    document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll('input[name="level"]').forEach(r => r.checked = false);
+});
+
+// ==================== تحريك الكتابة ====================
+document.querySelectorAll('.input-field').forEach(input => {
+    input.addEventListener('focus', function() {
+        this.parentElement.style.transform = 'translateX(4px)';
+        this.parentElement.style.transition = 'transform 0.2s';
+    });
+    input.addEventListener('blur', function() {
+        this.parentElement.style.transform = 'translateX(0)';
+    });
+});
+</script>
+
+</body>
+</html>
